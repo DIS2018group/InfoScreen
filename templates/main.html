@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div id="app" class="main-container">
+        <div id="tab-list-area">
+            <a v-for="(tab, index) in tabs" href="#"
+               :class="index == current_tab ? 'tab-button active' : 'tab-button'"
+               v-on:click="openTab(index)"
+               :id="tab.id">
+                <span :class="['glyphicon', tab.icon]"></span>
+            </a>
+        </div>
+        <div id="page-area">
+
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        this.data.tabs = {{ tabs|tojson|safe }};
+    </script>
+    {% for tab in tabs %}
+        {% include "tabs/" + tab.id + ".html" %}
+    {% endfor %}
+{% endblock %}

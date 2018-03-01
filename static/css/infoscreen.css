@@ -1,0 +1,39 @@
+.main-container {
+    display: flex;
+
+    height: 1920px;
+}
+
+#tab-list-area {
+    background-color: #eeeeee;
+
+    min-width: 180px;
+    max-width: 180px;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#page-area {
+    flex-grow: 1;
+}
+
+.tab-button {
+    display: block;
+
+    background-color: #eeeeee;
+    padding-top: 3em;
+    padding-bottom: 3em;
+
+    width: 100%;
+
+    text-align: center;
+}
+
+.tab-button.active {
+    background-color: white;
+}
+
+.tab-button > span {
+    color: black;
+    font-size: 5em;
+}
