@@ -1,7 +1,7 @@
 .main-container {
     display: flex;
 
-    height: 1920px;
+    height: 1080px;
 }
 
 #tab-list-area {
@@ -9,11 +9,16 @@
 
     min-width: 180px;
     max-width: 180px;
+
+    display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    justify-content: space-between;
 }
 
 #page-area {
+    padding-left: 20px;
+    padding-right: 20px;
+
     flex-grow: 1;
 }
 
@@ -27,6 +32,32 @@
     width: 100%;
 
     text-align: center;
+}
+
+.user-tab-button {
+    display: block;
+
+    background-color: #7fDbff;
+    padding-top: 3em;
+    padding-bottom: 3em;
+
+    width: 100%;
+
+    text-align: center;
+}
+
+.user-tab-button > span {
+    color: black;
+    font-size: 5em;
+}
+
+.user-tab-button > .user-name {
+    font-size: 2em;
+    color: black;
+}
+
+.user-tab-button.active {
+    background-color: #0074d9;
 }
 
 .tab-button.active {

@@ -1,23 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% raw %}
     <div id="app" class="main-container">
         <div id="tab-list-area">
-            <a v-for="(tab, index) in tabs" href="#"
-               :class="index == current_tab ? 'tab-button active' : 'tab-button'"
-               v-on:click="openTab(index)"
-               :id="tab.id">
-                <span :class="['glyphicon', tab.icon]"></span>
-            </a>
+            <div>
+                <a v-for="(tab, index) in tabs" href="#"
+                   :class="index == current_tab ? 'tab-button active' : 'tab-button'"
+                   v-on:click="openTab(index)"
+                   :id="tab.id">
+                    <span :class="['glyphicon', tab.icon]"></span>
+                </a>
+            </div>
+            <div>
+                <a href="#" :class="user.is_authenticated ? 'user-tab-button active' : 'user-tab-button'">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <div class="user-name">{{ user.name ? user.name : '' }}</div>
+                </a>
+            </div>
         </div>
         <div id="page-area">
 
         </div>
     </div>
+    {% endraw %}
 {% endblock content %}
 {% block extra_js %}
     <script>
-        this.data.tabs = {{ tabs|tojson|safe }};
+        infoscreen.data.tabs = {{ tabs|tojson|safe }};
     </script>
     {% for tab in tabs %}
         {% include "tabs/" + tab.id + ".html" %}

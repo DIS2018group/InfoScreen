@@ -25,3 +25,16 @@
         </tbody>
     </table>
 </script>
+<script>
+var infoscreen = self.infoscreen;
+
+var UNICAFE = {
+    activate: function() {
+        console.log("activated unicafe");
+    },
+    deactivate: function() {
+        console.log("deactivated unicafe");
+    }
+};
+infoscreen.tabs.push(UNICAFE);
+</script>

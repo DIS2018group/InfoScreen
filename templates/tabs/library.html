@@ -4,3 +4,16 @@
     </div>
     <p>Some library information here perhaps maybe probably</p>
 </script>
+<script>
+var infoscreen = self.infoscreen;
+
+var LIBRARY = {
+    activate: function() {
+        console.log("activated library");
+    },
+    deactivate: function() {
+        console.log("deactivated library");
+    }
+};
+infoscreen.tabs.push(LIBRARY);
+</script>
