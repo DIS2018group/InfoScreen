@@ -17,6 +17,12 @@ TABS = [
         "id": "library",
         "name": "Library",
         "icon": "glyphicon-book"
+    },
+    {
+        "id": "users",
+        "name": "Users",
+        "icon": "glyphicon-users",
+        "user_tab": True
     }
 ]
 
@@ -40,11 +46,20 @@ def heartbeat():
     unix_timestamp = time.time()
     logged_in = unix_timestamp % 10 >= 5
 
-    data = {
-        "user": {
-            "is_authenticated": True if logged_in else False,
-            "name": "Terry Test" if logged_in else None
+    if logged_in:
+        users = {
+            "tim": {
+                "name": "Tim",
+            },
+            "tom": {
+                "name": "Tom"
+            }
         }
+    else:
+        users = {}
+
+    data = {
+        "users": users
     }
 
     return json.dumps(data)

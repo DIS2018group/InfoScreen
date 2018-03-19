@@ -51,7 +51,7 @@
     font-size: 5em;
 }
 
-.user-tab-button > .user-name {
+.user-tab-button > .logged-in-count {
     font-size: 2em;
     color: black;
 }
@@ -67,4 +67,10 @@
 .tab-button > span {
     color: black;
     font-size: 5em;
+}
+
+.login-column {
+    padding-top: 100px;
+    font-size: 3em;
+    text-align: center;
 }

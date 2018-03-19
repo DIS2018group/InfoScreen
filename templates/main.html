@@ -5,7 +5,8 @@
     <div id="app" class="main-container">
         <div id="tab-list-area">
             <div>
-                <a v-for="(tab, index) in tabs" href="#"
+                <a v-for="(tab, index) in tabs"
+                   v-if="!tab.user_tab" href="#"
                    :class="index == current_tab ? 'tab-button active' : 'tab-button'"
                    v-on:click="openTab(index)"
                    :id="tab.id">
@@ -13,23 +14,27 @@
                 </a>
             </div>
             <div>
-                <a href="#" :class="user.is_authenticated ? 'user-tab-button active' : 'user-tab-button'">
+                <a href="#"
+                   :class="Object.keys(users).length ? 'user-tab-button active' : 'user-tab-button'"
+                   v-on:click="openTab(tabs.length-1)">
                     <span class="glyphicon glyphicon-user"></span>
-                    <div class="user-name">{{ user.name ? user.name : '' }}</div>
+                    <div class="logged-in-count">
+                        {{ Object.keys(users).length ? Object.keys(users).length + " user(s) logged in" : '' }}</div>
                 </a>
             </div>
         </div>
         <div id="page-area">
-
+            <component :is="tabs[current_tab].id"></component>
         </div>
     </div>
     {% endraw %}
 {% endblock content %}
 {% block extra_js %}
     <script>
-        infoscreen.data.tabs = {{ tabs|tojson|safe }};
+    infoscreen.data.tabs = {{ tabs|tojson|safe }};
     </script>
     {% for tab in tabs %}
         {% include "tabs/" + tab.id + ".html" %}
+        <script>addTab("{{ tab.id }}");</script>
     {% endfor %}
 {% endblock %}
