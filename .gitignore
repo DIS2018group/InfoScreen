@@ -115,3 +115,6 @@ Session.vim
 *~
 # auto-generated tag files
 tags
+
+# users.db
+users.db
