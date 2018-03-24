@@ -74,3 +74,12 @@
     font-size: 3em;
     text-align: center;
 }
+
+.user-column {
+    text-align: center;
+}
+
+.user-avatar {
+    width: 256px;
+    height: 256px;
+}

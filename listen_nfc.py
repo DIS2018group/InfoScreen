@@ -40,6 +40,7 @@ def listen_to_device(device_path):
                 print("Tag removed from scanner")
                 logout_user("NFC")
 
+
 if __name__ == "__main__":
     device_path = discover_device()
 

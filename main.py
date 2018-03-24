@@ -1,5 +1,7 @@
 from flask import Flask, render_template
 
+from users import get_users
+
 import time
 import json
 
@@ -41,25 +43,8 @@ def heartbeat():
     Probe the environment and figure out which user is logged in at the moment,
     if any
     """
-    # TODO: Authentication not implemented yet
-    # For now, fake a login/logout every 5 seconds
-    unix_timestamp = time.time()
-    logged_in = unix_timestamp % 10 >= 5
-
-    if logged_in:
-        users = {
-            "tim": {
-                "name": "Tim",
-            },
-            "tom": {
-                "name": "Tom"
-            }
-        }
-    else:
-        users = {}
-
     data = {
-        "users": users
+        "users": get_users()
     }
 
     return json.dumps(data)

@@ -7,13 +7,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div v-for="user in users"
-                     class="col-md-3">
+                     class="col-md-3 user-column">
                     <div class="page-header">
                         <h1>
-                            <span class="glyphicon glyphicon-user"></span>
                             {{ user.name }}
                         </h1>
                     </div>
+                    <img class="user-avatar" :src="user.image"/>
                 </div>
                 <div v-if="Object.keys(users).length < 4"
                      class="col-md-3">
