@@ -9,6 +9,8 @@ from randomavatar.randomavatar import Avatar
 import os
 import base64
 import random
+import json
+import datetime
 
 
 DATABASE_LOCATION = os.path.join(
@@ -46,6 +48,43 @@ def generate_avatar(user_id):
     image = "data:image/png;base64,%s" % str(base64.b64encode(image), "utf-8")
 
     return image
+
+
+def get_user_data(user_id):
+    """
+    Get persistent information for an user
+    """
+    db = open_database()
+
+    user_data_table = db["user_data"]
+    user_data = user_data_table.find_one(user_id=user_id)
+
+    current_time = datetime.datetime.now(datetime.timezone.utc).timestamp()
+
+    if not user_data:
+        user_data_table.insert({
+            "user_id": user_id,
+            "data": json.dumps({"timestamp": current_time})
+        })
+        return {"timestamp": current_time}
+    else:
+        return json.loads(user_data["data"])
+
+
+def update_user_data(user_id, data):
+    """
+    Update the data for a single user
+    """
+    db = open_database()
+
+    user_data_table = db["user_data"]
+    user_data_table.upsert(
+        {
+            "user_id": user_id,
+            "data": json.dumps(data)
+        },
+        ["user_id"]
+    )
 
 
 def login_user(auth_id, user_id):
@@ -90,7 +129,13 @@ def get_users():
     db = open_database()
 
     user_table = db["logged_in_users"]
-    return {
-        result["auth_id"]: result
-        for result in user_table.find()
-    }
+
+    users = user_table.find()
+
+    user_entries = {}
+    for user in users:
+        entry = user
+        entry["data"] = get_user_data(user["user_id"])
+        user_entries[user["auth_id"]] = entry
+
+    return user_entries
