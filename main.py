@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 
 from users import get_users, update_user_data
+from timetables import get_timetable
 
 import time
 import json
@@ -57,3 +58,13 @@ def heartbeat():
     }
 
     return json.dumps(data)
+
+
+@app.route("/timetables/")
+def timetables():
+    """
+    Retrieve public transit timetables
+    """
+    timetable = get_timetable()
+
+    return json.dumps(timetable)
