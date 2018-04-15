@@ -61,6 +61,10 @@ def _parse_graphql_response(response, stops):
 
         return dt
 
+    def time_to_seconds(time_str):
+        hour, minute = time_str.split(":")
+        return (int(hour) * 60) + int(minute)
+
     result = {
         "stops": {
             alias: {
@@ -81,11 +85,17 @@ def _parse_graphql_response(response, stops):
                 arrival_datetime = seconds_to_datetime(arrival_seconds)
 
                 trip_result = {
-                    "arrival": arrival_datetime,
+                    "arrival": arrival_datetime.strftime("%H:%M"),
                     "headsign": stoptime["headsign"],
                     "route": stoptime["trip"]["route"]["shortName"],
                 }
                 result["stops"][alias]["stoptimes"].append(trip_result)
+
+            # Sort results in ascending order
+            result["stops"][alias]["stoptimes"].sort(
+                key=lambda obj: time_to_seconds(obj["arrival"]))
+            result["stops"][alias]["stoptimes"] = result["stops"][
+                alias]["stoptimes"][0:19]
 
     return result
 

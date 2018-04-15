@@ -1,15 +1,62 @@
 <script id="timetables-template" type="text/x-template">
+    {% raw %}
     <div>
         <div class="page-header">
-            <h1>Timetables</h1>
+            <h1>Timetables <small>{{ timetables[current_timetable].description }}</small></h1>
         </div>
-        <table>
-
+        <table v-show="current_timetable == stop_name" v-for="(stop, stop_name) in timetables" class="timetable-table table table-striped">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Route</th>
+                    <th>Destination</th>
+                    <th>Stop</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="stoptime in stop.stoptimes">
+                    <th>{{ stoptime.arrival }}</th>
+                    <th>{{ stoptime.route }}</th>
+                    <th>{{ stoptime.headsign }}</th>
+                    <th>{{ stop.address }}</th>
+                </tr>
+            </tbody>
         </table>
     </div>
+    {% endraw %}
 </script>
 <script>
     var TIMETABLES = {
-
+        activate: function() {
+            console.log("activated timetables");
+        },
+        deactivate: function() {
+            console.log("deactivated timetables");
+        },
+        updateTimetables: function() {
+            $.ajax({
+                method: "GET",
+                dataType: "json",
+                url: "/timetables/",
+                success: function(data) {
+                    if (!("timetables" in infoscreen.data)) {
+                        // Default to stops leaving from A.I. Virtasen aukio/Väinö Auerin katu
+                        infoscreen.data.current_timetable = "virtanen";
+                    }
+                    infoscreen.data.timetables = data["stops"];
+                    Vue.set(infoscreen.data, "timetables", data["stops"]);
+                }
+            });
+        }
     };
+    $(document).ready(function() {
+        var infoscreen = self.infoscreen;
+
+        TIMETABLES.updateTimetables();
+
+        // Update timetables every 30s
+        window.setInterval(function() {
+            TIMETABLES.updateTimetables();
+        }, 30000);
+    });
 </script>

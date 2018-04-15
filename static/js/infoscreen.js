@@ -24,7 +24,7 @@ $(document).ready(function() {
     // Update user status every 0.5s
     window.setInterval(function() {
         updateStatus();
-    }, 500);
+    }, 1000);
 
     openTab(0);
 });

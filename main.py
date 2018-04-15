@@ -14,17 +14,26 @@ TABS = [
     {
         "id": "unicafe",
         "name": "Unicafe Menu",
-        "icon": "glyphicon-cutlery"
+        "icons": ["glyphicon", "glyphicon-cutlery"],
+        "icon_type": "span",
+    },
+    {
+        "id": "timetables",
+        "name": "Public transit timetables",
+        "icons": ["fas", "fa-bus", "fa-5x"],
+        "icon_type": "i",
     },
     {
         "id": "library",
         "name": "Library",
-        "icon": "glyphicon-book"
+        "icons": ["glyphicon", "glyphicon-book"],
+        "icon_type": "span",
     },
     {
         "id": "users",
         "name": "Users",
-        "icon": "glyphicon-users",
+        "icons": ["glyphicon", "glyphicon-users"],
+        "icon_type": "span",
         "user_tab": True
     }
 ]

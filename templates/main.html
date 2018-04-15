@@ -10,7 +10,7 @@
                    :class="index == current_tab ? 'tab-button active' : 'tab-button'"
                    v-on:click="openTab(index)"
                    :id="tab.id">
-                    <span :class="['glyphicon', tab.icon]"></span>
+                    <component :is="tab.icon_type" :class="tab.icons"></component>
                 </a>
             </div>
             <div>
