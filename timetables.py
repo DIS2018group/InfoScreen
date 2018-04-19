@@ -34,6 +34,9 @@ def _build_query(stops):
                             shortName
                         }}
                     }}
+                    stop {{
+                        code
+                    }}
                 }}
             }}\n
         """.format(alias=alias, address=address)
@@ -76,6 +79,10 @@ def _parse_graphql_response(response, stops):
     for alias, _, _ in stops:
         for stop in response["data"][alias]:
             for stoptime in stop["stoptimesWithoutPatterns"]:
+                # Skip trips with empty names
+                if not stoptime["headsign"]:
+                    continue
+
                 if stoptime["realtime"]:
                     # Prefer realtime prediction whenever possible
                     arrival_seconds = stoptime["realtimeArrival"]
@@ -88,6 +95,7 @@ def _parse_graphql_response(response, stops):
                     "arrival": arrival_datetime.strftime("%H:%M"),
                     "headsign": stoptime["headsign"],
                     "route": stoptime["trip"]["route"]["shortName"],
+                    "stop": stoptime["stop"]["code"]
                 }
                 result["stops"][alias]["stoptimes"].append(trip_result)
 
