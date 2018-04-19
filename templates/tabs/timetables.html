@@ -8,7 +8,7 @@
             <button v-for="(stop, stop_name) in timetables"
                     type="button"
                     v-on:click="current_timetable = stop_name"
-                    :class="stop_name == current_timetable ? 'btn btn-default active' : 'btn btn-default'">{{ stop.address }}</button>
+                    :class="stop_name == current_timetable ? 'btn btn-default timetable-btn active' : 'btn btn-default timetable-btn'">{{ stop.address }}</button>
         </div>
         <table v-if="current_timetable == stop_name" v-for="(stop, stop_name) in timetables" class="timetable-table table table-striped">
             <thead>
@@ -20,14 +20,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="stoptime in stop.stoptimes">
+                <tr v-for="stoptime in stop.stoptimes.slice(0, 16)">
                     <th>{{ stoptime.arrival }}</th>
                     <th>
-                        {{ stoptime.route }}
                         <a v-for="user in users" href="#"
                            :class="'favorite_routes' in user.data && user.data.favorite_routes.indexOf(stoptime.route) !== -1
                                   ? 'glyphicon glyphicon-remove remove-route' : 'glyphicon glyphicon-plus add-route'"
                            v-on:click="TIMETABLES.toggleFavoriteRoute(user.auth_id, stoptime.route)"></a>
+                        {{ stoptime.route }}
                     </th>
                     <th>{{ stoptime.headsign }}</th>
                     <th>{{ stop.address }}</th>
@@ -73,6 +73,8 @@
             } else {
                 userData.data["favorite_routes"].splice(routeIndex, 1);
             }
+
+            updateUserTimestamp(authId);
         },
         getStoptimesForRoutes: function(routes) {
             var results = [];

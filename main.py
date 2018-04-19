@@ -12,22 +12,10 @@ app = Flask(__name__)
 
 TABS = [
     {
-        "id": "unicafe",
-        "name": "Unicafe Menu",
-        "icons": ["glyphicon", "glyphicon-cutlery"],
-        "icon_type": "span",
-    },
-    {
         "id": "timetables",
         "name": "Public transit timetables",
         "icons": ["fas", "fa-bus", "fa-5x"],
         "icon_type": "i",
-    },
-    {
-        "id": "library",
-        "name": "Library",
-        "icons": ["glyphicon", "glyphicon-book"],
-        "icon_type": "span",
     },
     {
         "id": "users",

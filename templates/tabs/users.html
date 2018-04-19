@@ -28,7 +28,7 @@
                 </div>
                 <div v-for="user in users"
                      class="col-md-6">
-                    <div v-if="user.data.favorite_routes">
+                    <div v-if="user.data.favorite_routes && user.data.favorite_routes.length > 0">
                         <table class="timetable-table table table-striped">
                             <thead>
                                 <tr>
@@ -39,7 +39,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="stoptime in TIMETABLES.getStoptimesForRoutes(user.data.favorite_routes)">
+                                <tr v-for="stoptime in TIMETABLES.getStoptimesForRoutes(user.data.favorite_routes).slice(0, 15)">
                                     <th>{{ stoptime.arrival }}</th>
                                     <th>{{ stoptime.route }}</th>
                                     <th>{{ stoptime.headsign }}</th>

@@ -62,7 +62,6 @@ function openTab(index) {
  */
 function updateUserTimestamp(authId) {
     infoscreen.data.users[authId]["data"]["timestamp"] = +new Date() / 1000.0;
-    infoscreen.data.current_time = moment().format("HH:mm");
 }
 
 function updateStatus() {
@@ -116,6 +115,9 @@ function updateStatus() {
                     Vue.delete(infoscreen.data.users, key);
                 }
             });
+
+            // Also update clock
+            infoscreen.data.current_time = moment().format("HH:mm");
         }
     });
 }

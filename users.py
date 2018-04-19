@@ -77,6 +77,11 @@ def update_user_data(user_id, data):
     """
     db = open_database()
 
+    old_data = get_user_data(user_id)
+
+    if old_data["timestamp"] > data["timestamp"]:
+        return
+
     user_data_table = db["user_data"]
     user_data_table.upsert(
         {
