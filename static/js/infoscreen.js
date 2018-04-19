@@ -4,12 +4,17 @@ self.infoscreen = {};
 self.infoscreen.data = {
     users: {},
     tabs: [],
-    current_tab: 0
+    current_tab: 0,
+    current_time: moment().format("HH:mm")
 };
 this.infoscreen.tab_components = [];
 
 $(document).ready(function() {
     var infoscreen = self.infoscreen;
+
+    infoscreen.globalData = new Vue({
+        data: infoscreen.data
+    });
 
     infoscreen.app = new Vue({
         el: "#app",
@@ -34,7 +39,7 @@ function addTab(id) {
     Vue.component(id, {
         template: "#" + id + "-template",
         // All tabs share the same state
-        data: function() { return self.infoscreen.data }
+        data: function() { return infoscreen.globalData; }
     });
 };
 
@@ -57,6 +62,7 @@ function openTab(index) {
  */
 function updateUserTimestamp(authId) {
     infoscreen.data.users[authId]["data"]["timestamp"] = +new Date() / 1000.0;
+    infoscreen.data.current_time = moment().format("HH:mm");
 }
 
 function updateStatus() {

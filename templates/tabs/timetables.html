@@ -4,7 +4,13 @@
         <div class="page-header">
             <h1>Timetables <small>{{ timetables[current_timetable].description }}</small></h1>
         </div>
-        <table v-show="current_timetable == stop_name" v-for="(stop, stop_name) in timetables" class="timetable-table table table-striped">
+        <div class="btn-group">
+            <button v-for="(stop, stop_name) in timetables"
+                    type="button"
+                    v-on:click="current_timetable = stop_name"
+                    :class="stop_name == current_timetable ? 'btn btn-default active' : 'btn btn-default'">{{ stop.address }}</button>
+        </div>
+        <table v-if="current_timetable == stop_name" v-for="(stop, stop_name) in timetables" class="timetable-table table table-striped">
             <thead>
                 <tr>
                     <th>Time</th>
@@ -16,7 +22,13 @@
             <tbody>
                 <tr v-for="stoptime in stop.stoptimes">
                     <th>{{ stoptime.arrival }}</th>
-                    <th>{{ stoptime.route }}</th>
+                    <th>
+                        {{ stoptime.route }}
+                        <a v-for="user in users" href="#"
+                           :class="'favorite_routes' in user.data && user.data.favorite_routes.indexOf(stoptime.route) !== -1
+                                  ? 'glyphicon glyphicon-remove remove-route' : 'glyphicon glyphicon-plus add-route'"
+                           v-on:click="TIMETABLES.toggleFavoriteRoute(user.auth_id, stoptime.route)"></a>
+                    </th>
                     <th>{{ stoptime.headsign }}</th>
                     <th>{{ stop.address }}</th>
                 </tr>
@@ -47,6 +59,49 @@
                     Vue.set(infoscreen.data, "timetables", data["stops"]);
                 }
             });
+        },
+        toggleFavoriteRoute: function(authId, route) {
+            var userData = infoscreen.data.users[authId];
+
+            if (!("favorite_routes" in userData.data)) {
+                userData.data["favorite_routes"] = [];
+            }
+
+            var routeIndex = userData.data["favorite_routes"].indexOf(route)
+            if (routeIndex === -1) {
+                userData.data["favorite_routes"].push(route);
+            } else {
+                userData.data["favorite_routes"].splice(routeIndex, 1);
+            }
+        },
+        getStoptimesForRoutes: function(routes) {
+            var results = [];
+
+            Object.keys(infoscreen.data.timetables).forEach(
+                function(key, index) {
+                    var matches = infoscreen.data.timetables[key].stoptimes.filter(
+                        stoptime => routes.indexOf(stoptime.route) !== -1);
+
+                    for (var j=0; j < matches.length; j++) {
+                        matches[j]["address"] = infoscreen.data.timetables[key].address;
+                        results.push(matches[j]);
+                    }
+                }
+            );
+
+            results.sort(
+                function(a, b) {
+                    var timeA = a["arrival"].split(":");
+                    var aSeconds = (Number(timeA[0]) * 60) + Number(timeA[1]);
+
+                    var timeB = b["arrival"].split(":");
+                    var bSeconds = (Number(timeB[0]) * 60) + Number(timeB[1]);
+
+                    return aSeconds - bSeconds;
+                }
+            );
+
+            return results;
         }
     };
     $(document).ready(function() {
@@ -59,4 +114,8 @@
             TIMETABLES.updateTimetables();
         }, 30000);
     });
+
+    infoscreen.data.current_timetable = "virtanen";
+    infoscreen.data.timetables = undefined;
+    infoscreen.data.TIMETABLES = TIMETABLES; // Expose TIMETABLES methods
 </script>

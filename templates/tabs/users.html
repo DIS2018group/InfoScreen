@@ -2,7 +2,7 @@
     {% raw %}
     <div>
         <div class="page-header">
-            <h1>Users</h1>
+            <h1>User</h1>
         </div>
         <div class="container-fluid">
             <div class="row">
@@ -15,7 +15,7 @@
                     </div>
                     <img class="user-avatar" :src="user.image"/>
                 </div>
-                <div v-if="Object.keys(users).length < 4"
+                <div v-if="Object.keys(users).length == 0"
                      class="col-md-3">
                     <p class="login-column">
                         <span class="glyphicon glyphicon-qrcode"></span>
@@ -25,6 +25,34 @@
                             a QR code or performing a tap dance.
                         </h3>
                     </p>
+                </div>
+                <div v-for="user in users"
+                     class="col-md-6">
+                    <div v-if="user.data.favorite_routes">
+                        <table class="timetable-table table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Route</th>
+                                    <th>Destination</th>
+                                    <th>Stop</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="stoptime in TIMETABLES.getStoptimesForRoutes(user.data.favorite_routes)">
+                                    <th>{{ stoptime.arrival }}</th>
+                                    <th>{{ stoptime.route }}</th>
+                                    <th>{{ stoptime.headsign }}</th>
+                                    <th>{{ stoptime.address }}</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="login-column" v-else>
+                        <i class="fas fa-bus fa-3x"></i>
+                        <hr>
+                        <p>No favorite bus routes chosen. You can select favorite bus routes and see the next departures here.</p>
+                    </div>
                 </div>
             </div>
         </div>

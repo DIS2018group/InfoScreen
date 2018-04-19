@@ -94,8 +94,6 @@ def _parse_graphql_response(response, stops):
             # Sort results in ascending order
             result["stops"][alias]["stoptimes"].sort(
                 key=lambda obj: time_to_seconds(obj["arrival"]))
-            result["stops"][alias]["stoptimes"] = result["stops"][
-                alias]["stoptimes"][0:19]
 
     return result
 

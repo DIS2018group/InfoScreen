@@ -5,6 +5,7 @@
     <div id="app" class="main-container">
         <div id="tab-list-area">
             <div>
+                <p class="tab-list-time">{{ current_time }}</p>
                 <a v-for="(tab, index) in tabs"
                    v-if="!tab.user_tab" href="#"
                    :class="index == current_tab ? 'tab-button active' : 'tab-button'"
