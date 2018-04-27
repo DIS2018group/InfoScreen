@@ -29,6 +29,7 @@ $(document).ready(function() {
     // Update user status every 0.5s
     window.setInterval(function() {
         updateStatus();
+        logStatus();
     }, 1000);
 
     openTab(0);
@@ -62,6 +63,26 @@ function openTab(index) {
  */
 function updateUserTimestamp(authId) {
     infoscreen.data.users[authId]["data"]["timestamp"] = +new Date() / 1000.0;
+}
+
+function logStatus() {
+    var users = Object.keys(infoscreen.data.users);
+
+    var user = users.length == 1 ? infoscreen.data.users[users[0]]["name"] : "NONE";
+    var logObject = {
+        "user": user,
+        "current_tab": infoscreen.data.tabs[infoscreen.data.current_tab]["id"]
+    };
+
+    $.ajax({
+        data: {"log": JSON.stringify(logObject)},
+        method: "POST",
+        dataType: "json",
+        url: "/log/",
+        success: function(data) {
+            return;
+        }
+    });
 }
 
 function updateStatus() {
