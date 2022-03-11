@@ -13,7 +13,7 @@ Jinja2==2.10
 Mako==1.0.7
 MarkupSafe==1.0
 normality==0.5.11
-Pillow==2.9.0
+Pillow==9.0.1
 python-dateutil==2.7.0
 python-editor==1.0.3
 pyudev==0.21.0
